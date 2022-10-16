@@ -43,7 +43,7 @@ export default class Axios {
     }
 
     config = mergeConfig(this.defaults, config)
-
+    debugger
     const chain: PromiseChain<any>[] = [
       {
         resolved: dispatchRequest,
@@ -52,6 +52,7 @@ export default class Axios {
     ]
 
     this.interceptors.request.forEach(interceptor => {
+      debugger
       chain.unshift(interceptor)
     })
 
