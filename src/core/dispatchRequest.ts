@@ -6,6 +6,7 @@ import transform from './transform'
 
 function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
   processConfig(config)
+  throwIfCancellationRequested(config)
   return xhr(config).then(res => {
     return transformResponseData(res)
   })
@@ -27,6 +28,12 @@ function transformResponseData(res: AxiosResponse): AxiosResponse {
   res.data = transform(res.data, res.headers, res.config.transformResponse)
 
   return res
+}
+
+function throwIfCancellationRequested(config: AxiosRequestConfig): void {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested()
+  }
 }
 
 export default dispatchRequest
